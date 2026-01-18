@@ -1,28 +1,32 @@
 import java.util.Scanner;
 
 public class Principal {
-
     public static void main(String[] args) {
+
         Scanner lectura = new Scanner(System.in);
         ConversorService conversorService = new ConversorService();
-        PairConversionModel pairConversionModel = new PairConversionModel();
+        Utilidades utilidades = new Utilidades();
+
+        String monedaOrigen = "";
+        String monedaDestino = "";
+        double monto;
 
         String separador1 = "-----------------------------------------------------------------";
         String separador2 = "*****************************************************************";
         String menu = """
                 ****** Seleccione las MONEDA digitando el numero del menu ******* 
-                      ***********************  MENU  **********************
-                      *     1. USD - Dólar estadounidense                 *
-                      *     2. DOP - Peso dominicano                      *
-                      *     3. ARS - Peso argentino                       *
-                      *     4. COP - Peso colombiano                      *
-                      *     5. VES - Bolívar Soberano venezolano          *
-                      *     6. CLP - Peso chileno                         *
-                      *     7. EUR - Euro                                 *
-                      *     8. HTG - Gourde haitiano                      *
-                      *     9. Otras monedas                              *
-                      *     0. Salir                                      *
-                      *****************************************************
+                      ************************  MENU  ***********************
+                      *     1. USD - Dólar estadounidense                   *
+                      *     2. DOP - Peso dominicano                        *
+                      *     3. ARS - Peso argentino                         *
+                      *     4. COP - Peso colombiano                        *
+                      *     5. VES - Bolívar Soberano venezolano            *
+                      *     6. EUR - Euro                                   *
+                      *     7. HTG - Gourde haitiano                        *
+                      *     8. Otras monedas (Digitar Código de la Moneda)  *
+                      *     9. Ver Historia de Conversiones                 *
+                      *     0. Salir                                        *
+                      *******************************************************
                 """;
 
         System.out.println(separador2);
@@ -32,112 +36,33 @@ public class Principal {
         System.out.println("\n"+menu);
         System.out.println(separador1+ "\n");
 
-//        System.out.print("Moneda ORIGEN: --> ");
-//        pairConversionModel.base_code = lectura.next();
-//        System.out.print("Moneda DESTINO: --> ");
-//        pairConversionModel.target_code = lectura.next();
-//        System.out.print("Monto: --> ");
-//        pairConversionModel.conversion_rate = lectura.nextDouble();
-        //System.out.println(separador1);
+        LectorDeMonedas lectorDeMonedas = new LectorDeMonedas();
 
+        int opcion = -1;
 
-        int origen = -1;
         System.out.print("Moneda ORIGEN: --> ");
-        origen = lectura.nextInt();
-        switch (origen){
-            case 1:
-                pairConversionModel.base_code = "USD";
-                break;
-            case 2:
-                pairConversionModel.base_code = "DOP";
-                break;
-            case 3:
-                pairConversionModel.base_code = "ARS";
-                break;
-            case 4:
-                pairConversionModel.base_code = "COP";
-                break;
-            case 5:
-                pairConversionModel.base_code = "VES";
-                break;
-            case 6:
-                pairConversionModel.base_code = "CLP";
-                break;
-            case 7:
-                pairConversionModel.base_code = "EUR";
-                break;
-            case 8:
-                pairConversionModel.base_code = "HTG";
-                break;
-            case 9:
-                System.out.print("CÓDIGO de la moneda de ORIGEN: -->");
-                pairConversionModel.base_code = lectura.next();
-                break;
-            case 0:
+        opcion = lectura.nextInt();
+        monedaOrigen = lectorDeMonedas.elegirOpcion(opcion);
 
-                break;
-
-        }
-
-
-
-        int destino = -1;
         System.out.print("Moneda DESTINO: --> ");
-        destino = lectura.nextInt();
-        switch (destino){
-            case 1:
-                pairConversionModel.target_code = "USD";
-                break;
-            case 2:
-                pairConversionModel.target_code = "DOP";
-                break;
-            case 3:
-                pairConversionModel.target_code = "ARS";
-                break;
-            case 4:
-                pairConversionModel.target_code = "COP";
-                break;
-            case 5:
-                pairConversionModel.target_code = "VES";
-                break;
-            case 6:
-                pairConversionModel.target_code = "CLP";
-                break;
-            case 7:
-                pairConversionModel.target_code = "EUR";
-                break;
-            case 8:
-                pairConversionModel.target_code = "HTG";
-                break;
-            case 9:
-                System.out.print("CÓDIGO de la moneda de DESTINO: -->");
-                pairConversionModel.target_code = lectura.next();
-
-                break;
-            case 0:
-
-                break;
-
-        }
+        opcion = lectura.nextInt();
+        monedaDestino = lectorDeMonedas.elegirOpcion(opcion);
 
         System.out.print("Monto: --> ");
-        pairConversionModel.conversion_rate = lectura.nextDouble();
+        monto = lectura.nextDouble();
 
-try {
-    System.out.println("Las monedas seleccionadas son: "+ pairConversionModel.base_code + " y " + pairConversionModel.target_code);
-    pairConversionModel = conversorService.convertirMonedasPorPares(pairConversionModel.base_code, pairConversionModel.target_code, pairConversionModel.conversion_rate);
+        try {
+            PairConversionModel pairConversionModel =  conversorService.convertirMonedasPorPares(monedaOrigen, monedaDestino, monto);
+            String fechaFormateada = utilidades.formatearFecha(pairConversionModel.time_last_update_utc);
 
-    System.out.println(pairConversionModel.toString());
+            System.out.println(pairConversionModel.toString());
 
-}catch (Exception e)
-{
-    System.out.println(e.getMessage());
-}
+            utilidades.guardarHistoricoConversiones(pairConversionModel);
 
-
-
-
-
+        }catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
 
     }
 }

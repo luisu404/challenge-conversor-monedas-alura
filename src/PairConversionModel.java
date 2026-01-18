@@ -1,32 +1,36 @@
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 public class PairConversionModel {
-    String time_last_update_utc;
-    String base_code;
-    String target_code;
-    double conversion_rate;
-    double conversion_result;
+    public String time_last_update_utc;
+    public String base_code;
+    public String target_code;
+    public double conversion_rate;
+    public double conversion_result;
+
+//    public Date fecha_registro;
+//    public double monto;
 
 
-
-    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-
-    //Date fecha = formatoFecha.parse(time_last_update_utc);
-    String fechaFormateada = formatoFecha.format(time_last_update_utc);
 
     @Override
     public String toString() {
+
+        Utilidades utilidades = new Utilidades();
+        String fechaFormateada = utilidades.formatearFecha(time_last_update_utc);
+
         return String.format(
-                "A la Fecha %s 1 %s = %.2f \n %s a %s = %.2f",
-                fechaFormateada,
-                base_code,
-                conversion_rate,
-                base_code,
-                target_code,
-                conversion_result
+                "    Convirtiendo de: %s a %s%n" +
+                        "    A la Fecha (%s) 1 %s = %.2f %s%n" +
+                        "    Resultado: %.2f %s",
+                base_code, target_code,
+                fechaFormateada, base_code, conversion_rate, target_code,
+                conversion_result, target_code
         );
+
     }
+
 }
 

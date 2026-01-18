@@ -1,0 +1,72 @@
+[
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 1593.4625
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "DOP",
+    "target_code": "ARS",
+    "conversion_rate": 22.7845,
+    "conversion_result": 182.276
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 1593.4625
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 382.431
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 892.339
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 3059.448
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 3633.0945
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 1593.4625
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 1593.4625
+  },
+  {
+    "time_last_update_utc": "Sun, 18 Jan 2026 00:00:01 +0000",
+    "base_code": "USD",
+    "target_code": "DOP",
+    "conversion_rate": 63.7385,
+    "conversion_result": 382.431
+  }
+]
