@@ -1,7 +1,6 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -88,8 +87,7 @@ return "";
             SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
 
             Date fecha = formatoEntrada.parse(fechaSinFormato);
-            String fechaFormateada = formatoSalida.format(fecha);
-            return fechaFormateada;
+            return formatoSalida.format(fecha);
 
         } catch (ParseException e) {
             throw new RuntimeException("Error al convertir la fecha: "+ fechaSinFormato +". Mensaje de Error: "+e.getMessage());
@@ -97,5 +95,6 @@ return "";
 
 
     }
+
 
 }
