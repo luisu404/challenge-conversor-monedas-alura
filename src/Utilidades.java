@@ -15,8 +15,8 @@ import java.util.Locale;
 
 public class Utilidades {
 
-    public void guardarHistoricoConversiones(PairConversionModel pairConversionModel) {
 
+    public boolean guardarHistoricoConversiones(PairConversionModel pairConversionModel) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -35,6 +35,7 @@ public class Utilidades {
                 }
             } catch (IOException e) {
                 System.err.println("Error al leer historial: " + e.getMessage());
+                return false;
             }
         }
 
@@ -44,9 +45,12 @@ public class Utilidades {
         // 3. Reescribir archivo
         try (FileWriter writer = new FileWriter(archivo)) {
             gson.toJson(historial, writer);
+            return true;
         } catch (IOException e) {
             System.err.println("Error al guardar historial: " + e.getMessage());
+            return false;
         }
+
     }
 
     public List<PairConversionModel> leerHistoricoConversiones() {
@@ -73,9 +77,9 @@ public class Utilidades {
         List<PairConversionModel> historial = leerHistoricoConversiones();
 
         for (PairConversionModel item : historial){
-           return item.toString();
+            return item.toString();
         }
-return "";
+        return "";
 
     }
 

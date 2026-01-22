@@ -27,6 +27,7 @@ public class ConversorService {
                     .send(request, HttpResponse.BodyHandlers.ofString());
             var resultado = gson.fromJson(response.body(), PairConversionModel.class);
 
+            //pairConversionModel.fecha_registro
             return resultado;
 
         } catch (Exception e) {
