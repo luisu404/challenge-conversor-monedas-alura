@@ -8,13 +8,11 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Utilidades {
 
+    Scanner lectura = new Scanner(System.in);
 
     public boolean guardarHistoricoConversiones(PairConversionModel pairConversionModel) {
         Gson gson = new GsonBuilder()
@@ -24,7 +22,6 @@ public class Utilidades {
         File archivo = new File("HistorialConversiones.json");
         List<PairConversionModel> historial = new ArrayList<>();
 
-        // 1. Leer si existe
         if (archivo.exists() && archivo.length() > 0) {
             try (FileReader reader = new FileReader(archivo)) {
                 Type tipoLista = new TypeToken<List<PairConversionModel>>() {}.getType();
@@ -38,11 +35,9 @@ public class Utilidades {
                 return false;
             }
         }
-
-        // 2. Agregar nueva conversión
+        pairConversionModel.fecha_registro = new Date();
         historial.add(pairConversionModel);
 
-        // 3. Reescribir archivo
         try (FileWriter writer = new FileWriter(archivo)) {
             gson.toJson(historial, writer);
             return true;
@@ -50,55 +45,100 @@ public class Utilidades {
             System.err.println("Error al guardar historial: " + e.getMessage());
             return false;
         }
-
     }
 
     public List<PairConversionModel> leerHistoricoConversiones() {
+        File archivo = new File("HistorialConversiones.json");
 
-        List<PairConversionModel> historial = null;
-
-        try {
-            Gson gson = new Gson();
-            FileReader reader = new FileReader("HistorialConversiones.json");
-
-            Type tipoLista = new TypeToken<List<PairConversionModel>>() {}.getType();
-            historial = gson.fromJson(reader, tipoLista);
-
-            reader.close();
-
-        } catch (Exception e) {
-            System.err.println("Error al leer el historial: " + e.getMessage());
+        if (!archivo.exists() || archivo.length() == 0) {
+            return new ArrayList<>();
         }
 
-        return historial;
+        try (FileReader reader = new FileReader(archivo)) {
+            Gson gson = new Gson();
+            Type tipoLista = new TypeToken<List<PairConversionModel>>() {}.getType();
+            List<PairConversionModel> historial = gson.fromJson(reader, tipoLista);
+
+            return historial != null ? historial : new ArrayList<>();
+
+        } catch (IOException e) {
+            System.err.println("Error al leer el historial: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public String mostrarHistoricoConversiones() {
         List<PairConversionModel> historial = leerHistoricoConversiones();
 
-        for (PairConversionModel item : historial){
-            return item.toString();
+        if (historial.isEmpty()) {
+            return "No hay conversiones en el historial.";
         }
-        return "";
 
+        StringBuilder resultado = new StringBuilder();
+        resultado.append("\n════════════════ HISTORIAL DE CONVERSIONES ════════════════\n\n");
+
+        int contador = 1;
+        for (PairConversionModel item : historial) {
+            resultado.append("──────────── Conversión #").append(contador).append(" ────────────\n");
+            resultado.append(item.toString()).append("\n");
+
+            if (item.fecha_registro != null) {
+                resultado.append("Fecha de registro: ").append(formatearFecha(item.fecha_registro)).append("\n");
+            }
+
+            resultado.append("\n");
+            contador++;
+        }
+
+        resultado.append("════════════════════════════════════════════════════════════\n");
+        resultado.append("Total de conversiones: ").append(historial.size()).append("\n");
+
+        return resultado.toString();
     }
 
+    private String formatearFecha(Date fecha) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return formato.format(fecha);
+    }
 
-
-    public String formatearFecha(String fechaSinFormato){
+    public String formatearFecha(String fechaUTC) {
         try {
             SimpleDateFormat formatoEntrada = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
-            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
-
-            Date fecha = formatoEntrada.parse(fechaSinFormato);
+            Date fecha = formatoEntrada.parse(fechaUTC);
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             return formatoSalida.format(fecha);
-
-        } catch (ParseException e) {
-            throw new RuntimeException("Error al convertir la fecha: "+ fechaSinFormato +". Mensaje de Error: "+e.getMessage());
+        } catch (Exception e) {
+            return fechaUTC;
         }
-
-
     }
 
+    public void eliminarHistoricoConversiones() {
+        System.out.print("\n¿Está seguro que desea eliminar todo el historial? (S/N): --> ");
+        String confirmar = lectura.next().toUpperCase();
+        lectura.nextLine();
+        File archivo = new File("HistorialConversiones.json");
+
+        if (Objects.equals(confirmar, "S")){
+            if (archivo.exists()) {
+                if (archivo.delete()) {
+                    System.out.println("✓ Historial eliminado correctamente");
+                }
+                else {
+                    System.err.println("✗ No se pudo eliminar el historial");
+                }
+            } else {
+                System.out.println("No existe historial para eliminar");
+            }
+        }
+
+         else {
+            System.out.println("x Operación cancelada\n");
+        }
+    }
+
+    public int contarConversiones() {
+        List<PairConversionModel> historial = leerHistoricoConversiones();
+        return historial.size();
+    }
 
 }

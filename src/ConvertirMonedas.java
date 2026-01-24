@@ -135,11 +135,10 @@ public class ConvertirMonedas {
             }
         }
 
-
         try {
             PairConversionModel pairConversionModel = conversorService.convertirMonedasPorPares(monedaOrigen, monedaDestino, monto);
 
-            String mensajeHistorial = "";
+            String mensajeHistorial;
             if (utilidades.guardarHistoricoConversiones(pairConversionModel)) {
                 mensajeHistorial = "✓ Conversión guardada en el historial";
             } else {
@@ -162,7 +161,7 @@ public class ConvertirMonedas {
             throw new IllegalArgumentException("Opción inválida: Debe ingresar opciones disponibles del menú (número del [0] al [9])");
         }
 
-        String opcionSeleccionada = null;
+        String opcionSeleccionada = "";
 
         switch (opcion) {
             case 1:
@@ -190,12 +189,19 @@ public class ConvertirMonedas {
                 opcionSeleccionada = "HTG";
                 break;
             case 9:
+                boolean valido = false;
+
+                while (!valido) {
                 System.out.print("Digite el CÓDIGO de la moneda (3 letras): --> ");
                 opcionSeleccionada = lectura.next().toUpperCase();
+                boolean coincide = opcionSeleccionada.matches("^\\p{L}{3}$");
 
-                if (opcionSeleccionada.length() != 3) {
-                    throw new IllegalArgumentException("El código de moneda debe tener exactamente 3 caracteres");
+                    if (!coincide) {
+                        System.out.println("El código de moneda debe tener exactamente 3 caracteres, sin espacios ni números");
+                    }
+                    valido = true;
                 }
+
                 break;
             case 0:
                 opcionSeleccionada = "0";

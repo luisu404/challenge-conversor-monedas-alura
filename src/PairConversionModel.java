@@ -11,9 +11,6 @@ public class PairConversionModel {
     public double conversion_result;
 
     public Date fecha_registro;
-    public double monto;
-
-
 
     @Override
     public String toString() {

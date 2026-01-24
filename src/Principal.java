@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Principal {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Scanner lectura = new Scanner(System.in);
         ConvertirMonedas convertirMonedas = new ConvertirMonedas();
@@ -41,7 +41,10 @@ public class Principal {
             lectura.nextLine();
 
             switch (opcion) {
+
+
                 case 1:
+
                     boolean repetirConversion = true;
 
                     while (repetirConversion) {
@@ -60,13 +63,12 @@ public class Principal {
                             String respuesta = lectura.next().toUpperCase();
                             lectura.nextLine();
 
-                            if (respuesta.equals("S")) {
-                                repetirConversion = true;
-                            } else {
+                            if (!respuesta.equals("S")) {
                                 repetirConversion = false;
                             }
                         }
                     }
+
                     break;
 
                 case 2:
@@ -77,16 +79,7 @@ public class Principal {
                     break;
 
                 case 3:
-                    System.out.print("\n¿Está seguro que desea eliminar todo el historial? (S/N): --> ");
-                    String confirmar = lectura.next().toUpperCase();
-                    lectura.nextLine();
-
-                    if (confirmar.equals("S")) {
-                        // utilidades.eliminarHistoricoConversiones();
-                        System.out.println("✓ Historial eliminado correctamente\n");
-                    } else {
-                        System.out.println("x Operación cancelada\n");
-                    }
+                    utilidades.eliminarHistoricoConversiones();
                     break;
 
                 case 0:
